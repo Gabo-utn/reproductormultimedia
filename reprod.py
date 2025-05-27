@@ -14,6 +14,14 @@ window.title("Reproductor Multimedia")
 window.geometry('554x256')
 window.configure(background=co1)
 window.resizable(width=FALSE, height=FALSE)
+window.iconbitmap(r'C:/Users/ryrco/OneDrive/Escritorio/proyectyo-repmult/iconos/descarga.ico')
+
+
+
+
+
+
+
 window.mainloop()
 
 
