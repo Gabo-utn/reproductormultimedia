@@ -1,25 +1,39 @@
-from tkinter import *
+import tkinter as tk
 from tkinter import filedialog
 import pygame
 import os
+import threading
+import random
 
 # Inicializar pygame
 pygame.mixer.init()
 
-# Colores
-co1 = "#ffffff"  # blanco
-co2 = "#3C1DC6"  # violeta
-co3 = "#333333"  # negro
+# Ventana principal
+root = tk.Tk()
+root.title("Reproductor de Música")
+root.geometry("600x400")
+root.configure(bg="#2f2f2f")
+
+# Variables
+playlist = []
+current_index = 0
+playing = False
 
 # Funciones
-def cargar_cancion():
-    file = filedialog.askopenfilename(filetypes=[("Archivos MP3", "*.mp3")])
-    if file:
-        pygame.mixer.music.load(file)
-        label_nombre.config(text=os.path.basename(file))
+def cargar_canciones():
+    global playlist
+    files = filedialog.askopenfilenames(filetypes=[("MP3 Files", "*.mp3")])
+    for f in files:
+        playlist.append(f)
+        song_listbox.insert(tk.END, os.path.basename(f))
 
 def reproducir():
-    pygame.mixer.music.play()
+    global playing
+    if playlist:
+        pygame.mixer.music.load(playlist[current_index])
+        pygame.mixer.music.play()
+        playing = True
+        actualizar_animacion()
 
 def pausar():
     pygame.mixer.music.pause()
@@ -27,63 +41,55 @@ def pausar():
 def continuar():
     pygame.mixer.music.unpause()
 
-def detener():
-    pygame.mixer.music.stop()
-    label_nombre.config(text="Ninguna canción cargada")
+def siguiente():
+    global current_index
+    if current_index < len(playlist) - 1:
+        current_index += 1
+        reproducir()
 
-# Ventana principal
-window = Tk()
-window.title("Reproductor Multimedia")
-window.geometry('554x256')
-window.configure(background=co1)
-window.resizable(width=FALSE, height=FALSE)
+def actualizar_volumen(val):
+    volumen = int(val) / 100
+    pygame.mixer.music.set_volume(volumen)
 
-# Si querés evitar el error del icono, comentá esta línea si sigue fallando
-try:
-    window.iconbitmap("C:\\Users\\Usuario\\Pictures\\iconos\\icono.ico")
-except Exception as e:
-    print("No se pudo cargar el ícono de la ventana:", e)
+def actualizar_animacion():
+    if playing:
+        canvas.delete("all")
+        for i in range(10):
+            x = i * 15 + 5
+            h = random.randint(10, 60)
+            canvas.create_line(x, 60, x, 60 - h, fill="white", width=2)
+        root.after(200, actualizar_animacion)
 
-# Frame principal
-frame = Frame(window, bg=co1)
-frame.pack(pady=20)
+# UI
 
-label_nombre = Label(frame, text="Ninguna canción cargada", bg=co1, fg=co3, font=("Arial", 12))
-label_nombre.pack(pady=10)
+# Lista de canciones
+song_listbox = tk.Listbox(root, bg="#1f1f1f", fg="white", width=40, height=8, font=("Arial", 10))
+song_listbox.pack(pady=10)
 
-# Frame de controles
-frame_controles = Frame(window, bg=co1)
-frame_controles.pack()
+# Canvas para animación de ondas
+canvas = tk.Canvas(root, bg="#2f2f2f", height=60, width=160, highlightthickness=0)
+canvas.pack()
 
-# === Carga de íconos ===
-try:
-    img_play = PhotoImage(file=r"C:/Users/Usuario/Pictures/iconos/play.png")
-    img_pause = PhotoImage(file=r"C:/Users/Usuario/Pictures/iconos/pause.png")
-    img_continue = PhotoImage(file=r"C:/Users/Usuario/Pictures/iconos/continue.png")
-    img_stop = PhotoImage(file=r"C:/Users/Usuario/Pictures/iconos/stop.png")
-except Exception as e:
-    print("Error cargando íconos:", e)
-    exit()
+# Botones
+btn_frame = tk.Frame(root, bg="#2f2f2f")
+btn_frame.pack(pady=10)
 
-# Botones con íconos
-btn_play = Button(frame_controles, image=img_play, bd=0, command=reproducir)
-btn_play.grid(row=0, column=0, padx=10)
+tk.Button(btn_frame, text="⏮", command=siguiente, width=5).grid(row=0, column=0)
+tk.Button(btn_frame, text="▶", command=reproducir, width=5).grid(row=0, column=1)
+tk.Button(btn_frame, text="⏸", command=pausar, width=5).grid(row=0, column=2)
+tk.Button(btn_frame, text="⏯", command=continuar, width=5).grid(row=0, column=3)
 
-btn_pause = Button(frame_controles, image=img_pause, bd=0, command=pausar)
-btn_pause.grid(row=0, column=1, padx=10)
+# Barra de volumen (más pequeña)
+tk.Label(root, text="Volumen", bg="#2f2f2f", fg="white").pack()
+volumen = tk.Scale(root, from_=0, to=100, orient="horizontal", command=actualizar_volumen,
+                   length=150, showvalue=0, sliderlength=10)
+volumen.set(70)
+volumen.pack()
 
-btn_unpause = Button(frame_controles, image=img_continue, bd=0, command=continuar)
-btn_unpause.grid(row=0, column=2, padx=10)
+# Botón para cargar canciones
+tk.Button(root, text="Cargar canciones", command=cargar_canciones, bg="#444", fg="white").pack(pady=5)
 
-btn_stop = Button(frame_controles, image=img_stop, bd=0, command=detener)
-btn_stop.grid(row=0, column=3, padx=10)
-
-# Botón cargar
-btn_cargar = Button(window, text="Cargar Canción", bg=co2, fg=co1, font=("Arial", 10), command=cargar_cancion)
-btn_cargar.pack(pady=10)
-
-# Ejecutar ventana
-window.mainloop()
+root.mainloop()
 
 
 
