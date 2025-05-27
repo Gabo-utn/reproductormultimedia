@@ -21,8 +21,8 @@ window.iconbitmap(r'C:/Users/ryrco/OneDrive/Escritorio/proyectyo-repmult/iconos/
 
 
 
-
-window.mainloop()
+ 
+window.mainloop() 
 
 
 
