@@ -1,5 +1,6 @@
 🧠 Bibliotecas utilizadas
 Biblioteca	Uso principal
+
 tkinter	Crear la interfaz gráfica (ventanas, botones, sliders, listas, etc.).
 filedialog	Permite abrir un explorador de archivos para que el usuario cargue canciones.
 pygame	Manejar la reproducción de música (reproducir, pausar, cambiar volumen, etc.).
@@ -10,6 +11,7 @@ random	Se usa para animar las "ondas de sonido" de forma aleatoria.
 
 ⚙️ Funciones del programa
 Función	¿Qué hace?
+
 cargar_canciones()	Abre un explorador de archivos para seleccionar canciones MP3. Agrega los nombres a la lista.
 reproducir()	Reproduce la canción actual en la lista, inicia la animación y la barra de progreso.
 pausar()	Pausa la reproducción de música.
@@ -21,6 +23,7 @@ actualizar_seekbar()	Cada segundo actualiza la posición actual de la canción e
 mover_seek(val)	Permite adelantar o retroceder en la canción desde la barra de progreso.
 
 🔁 Variables importantes
+
 Variable	¿Para qué sirve?
 playlist	Lista con las rutas de las canciones seleccionadas.
 current_index	Guarda el número (índice) de la canción que se está reproduciendo.
