@@ -153,8 +153,8 @@ btn_next.grid(row=0, column=4, padx=5)
 # Barra de progreso
 etiqueta_progreso = tk.Label(ventana, text="Progreso", bg="#2e2e2e", fg="white")
 etiqueta_progreso.pack()
-seekbar = tk.Scale(ventana, from_=0, to=100, orient="horizontal", length=400, command=mover_seek)
-seekbar.pack()
+seekbar = tk.Scale(ventana, from_=0, to=100, orient="horizontal", length=400, showvalue=0, command=mover_seek) #agrege shwovalue DM
+seekbar.pack(pady=10)#agrege un 10 DM
 
 # Tiempos actuales y totales
 frame_tiempos = tk.Frame(ventana, bg="#2e2e2e")
