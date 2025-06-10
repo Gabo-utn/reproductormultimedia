@@ -285,7 +285,7 @@ btn_next.grid(row=0, column=4, padx=5)
 etiqueta_progreso = tk.Label(ventana, text="Progreso", bg="#2e2e2e", fg="white")
 etiqueta_progreso.pack()
 
-seekbar = tk.Scale(ventana, from_=0, to=100, orient="horizontal", length=400, command=mover_seek, bg="#2e2e2e", fg="white", highlightbackground="#2e2e2e", troughcolor="#555555")
+seekbar = tk.Scale(ventana, from_=0, to=100, orient="horizontal", length=400, command=mover_seek, bg="#2e2e2e", fg="white", highlightbackground="#2e2e2e", troughcolor="#555555", showvalue=False)
 seekbar.pack()
 seekbar.bind("<ButtonPress-1>", on_seekbar_drag_start)##
 seekbar.bind("<ButtonRelease-1>", on_seekbar_drag_end)##
